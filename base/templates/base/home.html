@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differentiator</title>
+</head>
+<body>
+    <h1>Heyy Iam deepak</h1>
+    <h3>Choose the input wave</h3>
+    <select id="waveform">
+            <option value="sine">Sine Wave</option>
+            <option value="cosine">Cosine Wave</option>
+            <option value="triangular">Triangular Wave</option>
+            <option value="square">Square Wave</option>
+    </select>
+
+    <button onclick="logWave()">Submit</button>
+
+    <script>
+    function logWave() {
+        const wave = document.getElementById("waveform").value;
+
+        // Send waveform to Django
+        fetch("http://127.0.0.1:8000/set_wave/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ type: wave })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Waveform sent: " + data.wave);
+            // ✅ Redirect to voltage display page
+            window.location.href = "/voltage_render/";
+        })
+        .catch(error => {
+            alert("Failed to send waveform!");
+            console.error("Error:", error);
+        });
+    }
+</script>
+</body>
+</html>

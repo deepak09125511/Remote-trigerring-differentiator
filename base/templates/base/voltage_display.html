@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltage Rendering</title>
+</head>
+<body>
+    <h1>Live Voltage Reading From Esp 32</h1>
+    <h2 id="Voltage">Fetching...</h2>
+
+    <script>
+        function fetchVoltage() {
+            fetch("http://127.0.0.1:8000/get_latest_data/")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("voltage").innerText = 
+                    "Voltage: " + data.voltage.toFixed(2) + " V";
+            })
+            .catch(err => {
+                document.getElementById("voltage").innerText = "Error fetching data";
+            });
+        }
+
+        // Fetch every second
+        setInterval(fetchVoltage, 1000);
+        fetchVoltage();
+        </script>
+</body>
+</html>
